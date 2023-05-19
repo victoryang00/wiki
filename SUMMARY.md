@@ -1,6 +1,6 @@
 # Summary
 - [Intro](README.md)
-- [c++](c艹/README.md)
+- [c艹](c++/README.md)
 - [kernel-mm](kernel-mm/README.md)
 - [kernel-obervability](kernel-obervability/README.md)
 - [rl-for-sys](rl-for-sys/README.md)
