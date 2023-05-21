@@ -1,22 +1,14 @@
 [book]
-authors = ["GeekPie_HPC"]
+authors = ["victoryang00"]
 language = "cn"
 multilingual = false
 src = "."
-title = "GeekPie_HPC Wiki"
+title = "Yiwei's Knowlege Base"
 
 [build]
 create-missing = false
 
-[preprocessor.rmheader]
-command = "python3 .preprocessor/rmheader.py"
-
 [output.html]
-git-repository-url = "https://github.com/geekpiehpc/wiki"
+git-repository-url = "https://github.com/victoryang00/wiki"
 site-url = "/wiki/"
 mathjax-support = true
-
-[output.linkcheck]
-follow-web-links = true
-traverse-parent-directories = false
-exclude = ['homeservershow.com', 'www.supermicro.com', 'wikichip.org', 'geekpie.club']

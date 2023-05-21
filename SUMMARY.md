@@ -5,6 +5,6 @@
 - [kernel-obervability](kernel-obervability/README.md)
 - [rl-for-sys](rl-for-sys/README.md)
 - [llvm-mlir](llvm-mlir/README.md)
-- [pcie](pcie/README.md)
+- [pcie-cxl](pcie-cxl/README.md)
 - [rust](rust/README.md)
 - [wasm](wasm/README.md)
