@@ -1,4 +1,7 @@
-# V1 vs V2
+# CGroup
+First it leverage the procfs to gain update and stats from the kernel. It leverage the hooks in the namespace, which, for example, if you don't want the current cgroup not exceeds the memory.max, root_memcg and your current hierarchy of memcg both have memcg, and the `container_of` operations will get you to the offset of which memcg and read the corresponding memory.max value to limit the memory. Then, RDMA CGroup has abstraction of internal resource pool like `hca_object` and `hca_handle`, while IO CGroup chas limits of rbytes
+
+## V1 vs V2
 1. The procfs read write api are different.
 ```c
 {
@@ -69,3 +72,12 @@ static ssize_t memory_oom_group_write(struct kernfs_open_file *of,
 	return nbytes;
 }
 ```
+2. multiple hierchy definination vs. single hierarchical tree management.
+3. memory ownership and memory swap events
+
+## How to get the struct what you want memcg etc. in kernel
+I have to get memcg from the current pid.
+1. If it's located in the task struct scope, simply use the `current` for getting the struct `get_mem_cgroup_from_mm(current->mm)`.
+2. If you are in the `work_struct`, you are possibly get struct by argument passing or `container_of` or back pointer.
+
+It's hard to get something in the critical path because it always acquires locks or rcu for getting some struct to be multithread safe. But there's always performance work around hacks.

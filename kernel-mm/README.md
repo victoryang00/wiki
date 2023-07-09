@@ -1,1 +1,1 @@
-This project will store the reading report of subsystem for linux kernel 6.4.0
+This project will store the reading report of subsystem for linux kernel 6.4.0. I'm a newbie developer in kernel, so there's some fallacy in the explaination, please make issue in the [repo](https://github.com/victoryang00/wiki/tree/master/kernel-mm)
