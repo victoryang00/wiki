@@ -75,6 +75,10 @@ static ssize_t memory_oom_group_write(struct kernfs_open_file *of,
 2. multiple hierchy definination vs. single hierarchical tree management.
 3. memory ownership and memory swap events
 
+## Lifetime of a cgroup
+
+![cgroup lifetime](https://image.whysdomain.com/jksj/qtlinuxcgroup01.png)
+
 ## How to get the struct what you want memcg etc. in kernel
 I have to get memcg from the current pid.
 1. If it's located in the task struct scope, simply use the `current` for getting the struct `get_mem_cgroup_from_mm(current->mm)`.
