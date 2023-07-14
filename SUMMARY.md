@@ -9,7 +9,7 @@
 - [rtl](rtl/README.md)
 - [llvm-mlir](llvm-mlir/README.md)
 - [pcie-cxl](pcie-cxl/README.md)
-    - [pcie-cxl](pcie-cxl/noc.md)
+    - [cxl](pcie-cxl/noc.md)
 - [rust](rust/README.md)
 - [wasm](wasm/README.md)
     - [aot-jit](wasm/aot-jit.md)
