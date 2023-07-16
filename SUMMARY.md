@@ -4,6 +4,7 @@
 - [kernel-mm](kernel-mm/README.md)
     - [cgroup](kernel-mm/cgroup.md)
     - [rcu](kernel-mm/rcu.md)
+    - [disaggregation](kernel-mm/disaggregation.md)
 - [kernel-obervability](kernel-obervability/README.md)
 - [rl-for-sys](rl-for-sys/README.md)
 - [rtl](rtl/README.md)

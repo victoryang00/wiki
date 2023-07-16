@@ -74,10 +74,13 @@ static ssize_t memory_oom_group_write(struct kernfs_open_file *of,
 ```
 2. multiple hierchy definination vs. single hierarchical tree management.
 3. memory ownership and memory swap events
-
+4. eBPF and rootless containers
 ## Lifetime of a cgroup
 
 ![cgroup lifetime](https://image.whysdomain.com/jksj/qtlinuxcgroup01.png)
+
+## Migration on demand
+https://lwn.net/Articles/916583/
 
 ## How to get the struct what you want memcg etc. in kernel
 I have to get memcg from the current pid.
