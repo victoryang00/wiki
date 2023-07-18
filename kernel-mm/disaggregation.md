@@ -57,7 +57,7 @@ spec:
     args: ["/dev/urandom"]
 ```
 
-Here requests and `limits` represent the minimum and maximum values of required resources, respectively.
+Here, requests and limits represent the minimum and maximum values of required resources.
 
 - The unit of CPU resources `m` is `millicores` the abbreviation, which means **one-thousandth of a core**, so `cpu: 500m` means that `0.5` a core is required;
 - The unit of memory is well understood, that is, common units such as MB and GB.
@@ -136,6 +136,8 @@ The above is the basic resource model of k8s. Let's look at a few related config
 
 ### **Kubelet related configuration parameters**
 
+![](https://d33wubrfki0l68.cloudfront.net/21f29e72a3846d4f25c5a33f18cddd09a45a9b34/10990/images/docs/memory-manager-diagram.svg)
+
 kubelet command parameters related to resource reservation (segmentation):
 
 - `--system-reserved=""`
@@ -210,5 +212,139 @@ cpu.stat                memory.numa_stat
 The procfs is registered using the API `cftype` that updates on every access the `memroy.numa_stat`
 
 ```c
+anon N0=0 N1=0
+file N0=4211032064 N1=13505200128
+kernel_stack N0=0 N1=0
+pagetables N0=0 N1=0
+sec_pagetables N0=0 N1=0
+shmem N0=0 N1=0
+file_mapped N0=0 N1=0
+file_dirty N0=0 N1=0
+file_writeback N0=0 N1=0
+swapcached N0=0 N1=0
+anon_thp N0=0 N1=0
+file_thp N0=0 N1=0
+shmem_thp N0=0 N1=0
+inactive_anon N0=0 N1=0
+active_anon N0=0 N1=0
+inactive_file N0=4176166912 N1=11106676736
+active_file N0=34865152 N1=2398523392
+unevictable N0=0 N1=0
+slab_reclaimable N0=21441072 N1=19589888
+slab_unreclaimable N0=136 N1=0
+workingset_refault_anon N0=0 N1=0
+workingset_refault_file N0=0 N1=0
+workingset_activate_anon N0=0 N1=0
+workingset_activate_file N0=0 N1=0
+workingset_restore_anon N0=0 N1=0
+workingset_restore_file N0=0 N1=0
+workingset_nodereclaim N0=0 N1=0
+```
+
+Cgroup manager is an interface to support 
+
+In pkg/kubelet/cm/qos_container_manager_linux.go:90 will initialize 2 sub directory in `/sys/fs/cgroup/kubepods/` to control burstable and besteffort qos.
+
+```go
+// Top level for Qos containers are created only for Burstable
+// and Best Effort classes
+qosClasses := map[v1.PodQOSClass]CgroupName{
+    v1.PodQOSBurstable:  NewCgroupName(rootContainer, strings.ToLower(string(v1.PodQOSBurstable))),
+    v1.PodQOSBestEffort: NewCgroupName(rootContainer, strings.ToLower(string(v1.PodQOSBestEffort))),
+}
+```
+
+For cgroup container manager, the api are described in `kubelet` as below. every once in a while, even if the cgroup scheduler does nothing, it will 1. periodically check the cgroup memory pod and check whether need to reserve more memory. On calling setMemoryReserve, it will updates `memory.max` in the corresponding pod cgroup path. Other checking stats of cgroup path is defined in `vendor/github.com/google/cadvisor/manager/container.go`
+
+```go
+type qosContainerManagerImpl struct {
+	sync.Mutex
+	qosContainersInfo  QOSContainersInfo
+	subsystems         *CgroupSubsystems
+	cgroupManager      CgroupManager
+	activePods         ActivePodsFunc
+	getNodeAllocatable func() v1.ResourceList
+	cgroupRoot         CgroupName
+	qosReserved        map[v1.ResourceName]int64
+}
+
+// CgroupManager allows for cgroup management.
+// Supports Cgroup Creation ,Deletion and Updates.
+type CgroupManager interface {
+	// Create creates and applies the cgroup configurations on the cgroup.
+	// It just creates the leaf cgroups.
+	// It expects the parent cgroup to already exist.
+	Create(*CgroupConfig) error
+	// Destroy the cgroup.
+	Destroy(*CgroupConfig) error
+	// Update cgroup configuration.
+	Update(*CgroupConfig) error
+	// Validate checks if the cgroup is valid
+	Validate(name CgroupName) error
+	// Exists checks if the cgroup already exists
+	Exists(name CgroupName) bool
+	// Name returns the literal cgroupfs name on the host after any driver specific conversions.
+	// We would expect systemd implementation to make appropriate name conversion.
+	// For example, if we pass {"foo", "bar"}
+	// then systemd should convert the name to something like
+	// foo.slice/foo-bar.slice
+	Name(name CgroupName) string
+	// CgroupName converts the literal cgroupfs name on the host to an internal identifier.
+	CgroupName(name string) CgroupName
+	// Pids scans through all subsystems to find pids associated with specified cgroup.
+	Pids(name CgroupName) []int
+	// ReduceCPULimits reduces the CPU CFS values to the minimum amount of shares.
+	ReduceCPULimits(cgroupName CgroupName) error
+	// MemoryUsage returns current memory usage of the specified cgroup, as read from the cgroupfs.
+	MemoryUsage(name CgroupName) (int64, error)
+	// Get the resource config values applied to the cgroup for specified resource type
+	GetCgroupConfig(name CgroupName, resource v1.ResourceName) (*ResourceConfig, error)
+	// Set resource config for the specified resource type on the cgroup
+	SetCgroupConfig(name CgroupName, resource v1.ResourceName, resourceConfig *ResourceConfig) error
+}
+```
+
+For memory scheduler in the scheduler, k8s defined 
+
+```go
+// Manager interface provides methods for Kubelet to manage pod memory.
+type Manager interface {
+	// Start is called during Kubelet initialization.
+	Start(activePods ActivePodsFunc, sourcesReady config.SourcesReady, podStatusProvider status.PodStatusProvider, containerRuntime runtimeService, initialContainers containermap.ContainerMap) error
+
+	// AddContainer adds the mapping between container ID to pod UID and the container name
+	// The mapping used to remove the memory allocation during the container removal
+	AddContainer(p *v1.Pod, c *v1.Container, containerID string)
+
+	// Allocate is called to pre-allocate memory resources during Pod admission.
+	// This must be called at some point prior to the AddContainer() call for a container, e.g. at pod admission time.
+	Allocate(pod *v1.Pod, container *v1.Container) error
+
+	// RemoveContainer is called after Kubelet decides to kill or delete a
+	// container. After this call, any memory allocated to the container is freed.
+	RemoveContainer(containerID string) error
+
+	// State returns a read-only interface to the internal memory manager state.
+	State() state.Reader
+
+	// GetTopologyHints implements the topologymanager.HintProvider Interface
+	// and is consulted to achieve NUMA aware resource alignment among this
+	// and other resource controllers.
+	GetTopologyHints(*v1.Pod, *v1.Container) map[string][]topologymanager.TopologyHint
+
+	// GetPodTopologyHints implements the topologymanager.HintProvider Interface
+	// and is consulted to achieve NUMA aware resource alignment among this
+	// and other resource controllers.
+	GetPodTopologyHints(*v1.Pod) map[string][]topologymanager.TopologyHint
+
+	// GetMemoryNUMANodes provides NUMA nodes that are used to allocate the container memory
+	GetMemoryNUMANodes(pod *v1.Pod, container *v1.Container) sets.Int
+
+	// GetAllocatableMemory returns the amount of allocatable memory for each NUMA node
+	GetAllocatableMemory() []state.Block
+
+	// GetMemory returns the memory allocated by a container from NUMA nodes
+	GetMemory(podUID, containerName string) []state.Block
+}
 ```
 
