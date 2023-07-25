@@ -164,9 +164,9 @@ The default is not enabled. In fact, it is difficult to achieve complete isolati
 
 The k8s resource model will be introduced here first, and then enter the focus of this article, how k8s uses cgroups to limit the resource usage of workloads such as containers, pods, and basic services (enforcement).
 
-## ## k8s cgroup design
+## k8s cgroup design
 
-### ### cgroup base
+### cgroup base
 
 groups are Linux kernel infrastructures that can **limit, record and isolate** the amount of resources (CPU, memory, IO, etc.) **used by** process groups.
 
@@ -254,7 +254,7 @@ qosClasses := map[v1.PodQOSClass]CgroupName{
 }
 ```
 
-For cgroup container manager, the api are described in `kubelet` as below. every once in a while, even if the cgroup scheduler does nothing, it will 1. periodically check the cgroup memory pod and check whether need to reserve more memory. On calling setMemoryReserve, it will updates `memory.max` in the corresponding pod cgroup path. Other checking stats of cgroup path is defined in `vendor/github.com/google/cadvisor/manager/container.go`
+For cgroup container manager, the api are described in `kubelet` as below. every once in a while, even if the cgroup scheduler does nothing, it will 1. periodically check the cgroup memory pod and check whether need to reserve more memory or from one qos group to the other. On calling setMemoryReserve, it will updates `memory.max` in the corresponding pod cgroup path. Other checking stats of cgroup path is defined in `vendor/github.com/google/cadvisor/manager/container.go`
 
 ```go
 type qosContainerManagerImpl struct {
@@ -304,7 +304,7 @@ type CgroupManager interface {
 }
 ```
 
-For memory scheduler in the scheduler, k8s defined 
+For memory scheduler in the scheduler, k8s defined:
 
 ```go
 // Manager interface provides methods for Kubelet to manage pod memory.
