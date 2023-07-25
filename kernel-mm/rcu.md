@@ -356,7 +356,42 @@ dmesg -wH[  +4.088043] audit: type=1400 audit(1690245681.539:137): apparmor="ALL
 [ +10.107349] audit: type=1400 audit(1690245954.474:166): apparmor="ALLOWED" operation="open" class="file" profile="/usr/sbin/sssd" name="/proc/1619537/cmdline" pid=1942 comm="sssd_nss" requested_mask="r" denied_mask="r" fsuid=0 ouid=0
 [Jul25 00:46] audit: type=1400 audit(1690245964.582:167): apparmor="ALLOWED" operation="open" class="file" profile="/usr/sbin/sssd" name="/proc/1619565/cmdline" pid=1942 comm="sssd_nss" requested_mask="r" denied_mask="r" fsuid=0 ouid=0
 ```
-The core dump process caused by core is 
-```c
+The syndrome above is first get rcu read-side critical section been violated cuased by following code. Then jiffies will be wrong and core dump process caused by increasing jiffies and died because of VM_FAULT_OOM leaked out to the #PF handler. Retrying PF.
 
+```c
+bool bede_flush_node_rss(struct mem_cgroup *memcg) { // work around for every time call policy_node for delayed
+	int nid;
+	if (mem_cgroup_disabled()){
+		return false;
+	}
+	mem_cgroup_flush_stats();
+	for_each_node_state(nid, N_MEMORY) {
+		u64 size;
+		struct lruvec *lruvec;
+		pg_data_t *pgdat = NODE_DATA(nid);
+		if (!pgdat)
+			return false;
+		lruvec = mem_cgroup_lruvec(memcg, pgdat);
+		if (!lruvec)
+			return false;
+		size = lruvec_page_state_local(lruvec, NR_ANON_MAPPED) >> PAGE_SHIFT;
+		memcg->node_rss[nid] = size >> 20;
+	}
+	return true;
+}
+...
+int policy_node(gfp_t gfp, struct mempolicy *policy, int nd)
+{
+        if (policy->mode != MPOL_BIND && bede_should_policy) {
+        	struct mem_cgroup *memcg = get_mem_cgroup_from_mm(current->mm);
+                if (memcg && root_mem_cgroup && memcg != root_mem_cgroup) {
+                    if (bede_flush_node_rss(memcg)) {
+                        // bede_append_page_walk_and_migration(current->cgroups->dfl_cgrp->bede);
+                        nd = bede_get_node(memcg, nd);
+                        return nd;
+                    }
+                }
+        }
 ```
+
+I tried [https://lwn.net/Articles/916583/](https://lwn.net/Articles/916583/) and [https://lwn.net/Articles/916583/](https://lwn.net/Articles/916583/). And I thought the race is possibly interrupt that caused into `__mod_node_page_state`, or memcg may encounter TOUTOC bug. I decided not to put un-preemptable job into hot path.
