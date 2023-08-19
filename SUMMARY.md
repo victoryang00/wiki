@@ -1,7 +1,7 @@
 # Summary
 - [Intro](README.md)
 - [c艹](c++/README.md)
-  - [c艹](c++/view.md)
+  - [view](c++/view.md)
 - [kernel-mm](kernel-mm/README.md)
     - [cgroup](kernel-mm/cgroup.md)
     - [rcu](kernel-mm/rcu.md)
