@@ -6,4 +6,5 @@ We have an idea of bringing "performance record and replay" onto the table in th
 2. What's the virtualization of memory?
 3. What's the virtualization of CXL devices in terms of CPU?
 4. What's the virtualization of CXL devices in terms of outer devices?
+VFIO/SRIOV/DDA
 
