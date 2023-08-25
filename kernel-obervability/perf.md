@@ -131,5 +131,8 @@ int PerfInfo::stop() {
 }
 ```
 
+## Limitation of attaching pmu
+Limit to 4, because ctr only has 4 for each cha
+
 ## Reference
 1. https://github.com/intel/pcm
