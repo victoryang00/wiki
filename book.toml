@@ -3,7 +3,7 @@ authors = ["victoryang00"]
 language = "cn"
 multilingual = false
 src = "."
-title = "Yiwei's Knowlege Base"
+title = "SlugWiki"
 
 [build]
 create-missing = false

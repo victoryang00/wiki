@@ -1,6 +1,6 @@
-# Introduction
+# Introduction to Slug Wiki
 
-本地存放yyw的一些笔记，包括但不限于：
+Local storage for some of SlugLab's extremely small notes, including but not limited to:
 1. kernel mm subsystem
 2. kernel observability
 3. LLVM & MLIR
