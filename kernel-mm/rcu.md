@@ -395,3 +395,6 @@ int policy_node(gfp_t gfp, struct mempolicy *policy, int nd)
 ```
 
 I tried [https://lwn.net/Articles/916583/](https://lwn.net/Articles/916583/) and [https://lwn.net/Articles/916583/](https://lwn.net/Articles/916583/). And I thought the race is possibly interrupt that caused into `__mod_node_page_state`, or memcg may encounter TOUTOC bug. I decided not to put un-preemptable job into hot path.
+
+## General Debug process of segfaults.
+Get the crash reason for (segfaults)[https://utcc.utoronto.ca/~cks/space/blog/linux/KernelSegfaultMessageMeaning] in dmesg, the dumped ip (without running gdb since gdb will trap all signal) will help you locate where's specific code section loaded to. you can know the line with addr2line or find the label in kcallsym with offset to see the assembly and map back to the source code.
