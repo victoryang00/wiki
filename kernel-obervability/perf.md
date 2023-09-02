@@ -1,6 +1,8 @@
 ## Perf is powerful
 Perf can init bpf, performance counters, kprobes, uprobes, and tracepoints. basically observing the uncore and kernel metrics entry point, wraps all the initial procedure of init bpf jit, msr & set PMU Control register, redirect the PC and hijack the return of kretprobe and partially set ltrace point conditional one instruction. It also wraps the ending procedure of unmap the jit, recover the msr state, and clean the process. The essence of everything is a file manifests in the parameter can be either process-wise or system-wise, all CPU or single CPU. The problem is once you wrap everything into file abstraction, you still need to make sure they might be incorrect because of what. TOUTOC, register cfi, undocumented operations etc.
 
+The perf driver code need the kernel version recognize the chip, etc. when I use 5.4 for alderlake, the expected semantic for perf for little core is non deterministic. When I use 6.0 for SPR, the enable turbo driver seems not be implemented.
+
 ## Kernel and CPU preparation of get solid results
 ```bash
 flush_fs_caches()
