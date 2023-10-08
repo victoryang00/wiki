@@ -395,3 +395,9 @@ int policy_node(gfp_t gfp, struct mempolicy *policy, int nd)
 ```
 
 I tried [https://lwn.net/Articles/916583/](https://lwn.net/Articles/916583/) and [https://lwn.net/Articles/916583/](https://lwn.net/Articles/916583/). And I thought the race is possibly interrupt that caused into `__mod_node_page_state`, or memcg may encounter TOUTOC bug. I decided not to put un-preemptable job into hot path.
+
+## Current Status in 6.6.0-4c4
+![RCU option](image.png)
+
+## Debug Interface
+![RCU Debug](image-1.png)
