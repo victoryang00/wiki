@@ -12,7 +12,11 @@ make a map in the userspace and use LLVM JIT to hook the function to write the m
 ![bpftime](image-1.png)
 
 ## eBPF hardening tool
-The Linux kernel has its eBPF verifier that achieves these guarantees by undertaking a strict static analysis across all eBPF programs, checking all paths for invalid memory accesses and disallowing loops to ensure termination. This requires user efforts and a battle with the verifier, which doesn't actually dive into the function-level relations based on synthesis. our work puts the simulation of the process of human battle with the eBPF verifier for LLM to understand. Other hardening tools include Runtime Verifier for inserted eBPF together with other properties that don't fail the static assertion at the runtime.
+The Linux kernel has its eBPF verifier that achieves these guarantees by undertaking a strict static analysis across all eBPF programs, checking all paths for invalid memory accesses and disallowing loops to ensure termination.
+
+- Spectre v1 Bound check bypass (mitigated by lfence or verifier)
+- Spectre v2 Branch Target Injection (before loaded to the kernel mitigated by disabling interpreter)
+- unprivileged BPF for SOCKET_FILTER and CGROUP_SKB only
 ## Replace UserBypass
 Compare with SFI way of protecting the boundary, the static compilation with security checks that do not introduce extra checking is always expensive.
 
@@ -22,7 +26,17 @@ XRP's idea is syscall batching. We can take the mmaped buffer as a fast pass to 
 Need data plane in cross boundary communication. control plan in separate U/K.
 
 ## Why eBPF for security is wrong
-BPF_LSM on loading will enter a previledge mode, it will be hard to maintain the context whether the current thread's permission for memory is complicated, and with page fault or EL1->EL2 change will be hard to maintain
+BPF_LSM on loading will enter a previledge mode, it will be hard to maintain the context whether the current thread's permission for memory is complicated, and with page fault or EL1->EL2(arm) change will be hard to maintain.
+
+- can read arbitrary kernel data (can not be per cgroup)
+- can deny operations
+- can sleep
+## Under development
+- Hooks:
+- scheduler + bpf
+- hid + bpf
+- oom + bpf
+- fuse + bpf
 
 ## Reference
 1. https://lore.kernel.org/lkml/202209030333.Goj9I0Pe-lkp@intel.com/T/
