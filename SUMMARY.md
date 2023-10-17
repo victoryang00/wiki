@@ -2,6 +2,8 @@
 - [Intro](README.md)
 - [c艹](c++/README.md)
   - [view](c++/view.md)
+  - [pmr](c++/pmr.md)
+  - [static replex expr](c++/static_replex_expr.md)
 - [kernel-mm](kernel-mm/README.md)
     - [cgroup](kernel-mm/cgroup.md)
     - [rcu](kernel-mm/rcu.md)
