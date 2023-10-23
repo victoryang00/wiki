@@ -28,6 +28,7 @@
     - [simulator design](pcie-cxl/noc.md)
 - [rust](rust/README.md)
     - [iouring windows](rust/iouring_windows.md)
+    - [asahi](rust/asahi.md)
     - [libcapstone](rust/libcapstone.md)
 - [wasm](wasm/README.md)
     - [aot jit](wasm/aot_jit.md)
