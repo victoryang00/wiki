@@ -82,6 +82,18 @@ disable_node1_core()
 {
     echo 0 | sudo tee /sys/devices/system/node/node1/cpu*/online >/dev/null 2>&1
 }
+
+# Can do it in bios https://www.supermicro.com/manuals/motherboard/X13/MNL-2470.pdf
+disable_kti_prefetcher()
+{
+    
+}
+
+# Can do it in msr https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/technical-documentation/cpuid-enumeration-and-architectural-msrs.html
+disable_dmp_prefetcher()
+{
+    wrmsr -a 0x48 0x8   
+}
 ```
 
 ## The general initial process of perf
