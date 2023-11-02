@@ -2,14 +2,20 @@
 
 When I was designing the simulator I compared serveral back up solutions. I will tell why they are not working. So the problem is how to give ld/st interface desired delay from the application perspective.
 
-![image-20231026123952716](C:\Users\victoryang00\AppData\Roaming\Typora\typora-user-images\image-20231026123952716.png)
+## Hardware implementation
+The original implementation of CXL.mem is they have a window inside the LLC, and if you access that 
+![image-20231026123952716](image-20231026123952716.png)
 
-## Solution 1
+## TMC Solution from Hiner and Yuanjiang
 
-The original implementation of CXL.mem is they have a window inside the 
-
-## Solution 2
+## Physical unplug Solution
 
 lsmem to turn off
 
-## Solution 3
+## PEMP dynamic region based Solution
+
+## DAMON Solution from Amazon's 
+
+## My QEMU Solution
+
+## My CXLMemSim Solution
