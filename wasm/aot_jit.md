@@ -26,9 +26,14 @@ ORCJIT is not a standalone JIT engine and do not have dynamic compilation with p
       1. dwarf debug info(refer to julia) []
       2. codecache
 ## What's the implementation of AOT in WAMR
-```c
+![Alt text](image.png)
 
-```
+1. `aot_loader.c` is the main entry point of AOT
+2. `aot_runtime.c` gives the runtime export function for AOT that can hook for specific logic exports
+3. `aot_compile.c` you can export the logic and output the corresponding calls the runtime function. etc. `aot_alloc_frame` and `aot_free_frame` with `aot_call_indirect` and `aot_call` to call the function with `--aot-dump-frame` on for wamrc option. 
+4. `aot_emit_*.c` is the instruction emmitter for every instruction in wasm which literally the same as interpretor but to LLVM backend.
+5. checkpoint happens with LLVM passes that insert the `INT3` with `fence` on top of the label. where the wasm stack is stateless of the LLVM state which we can snapshot all the corresponding state to wasm view. Restore happens to make the stateless wasm stack back to the LLVM state. which literally skip the logic that happens before the checkpoint.
+
 ## References
 1. https://www.bilibili.com/video/BV13a41187NM/?spm_id_from=333.337.search-card.all.click
 2. https://dl.acm.org/doi/abs/10.1145/3603165.3607393
