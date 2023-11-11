@@ -1,3 +1,6 @@
 [submodule "quantitative-approach"]
 	path = quantitative-approach
 	url = https://github.com/victoryang00/computer-architecture-revisit-a-quantitative-approach/
+[submodule "m3-chip-explainer"]
+	path = m3-chip-explainer
+	url = https://github.com/victoryang00/m3-chip-explainer
