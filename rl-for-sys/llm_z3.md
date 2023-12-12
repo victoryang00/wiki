@@ -17,3 +17,6 @@ I think the Z3 is a good tool for verification. LLM can know the stable mapping 
 
 ## Z3 for Logic Proof
 LLM for auto code logic proof has other implementations for C code applying CMBC or other formal verification during training and prompting. eBPF is a more domain-specific way of proving stable mapping from the underlying logic.
+
+## Reference
+1. KEN: Kernel Extensions using Natural Language
