@@ -23,8 +23,9 @@ ORCJIT is not a standalone JIT engine and do not have dynamic compilation with p
    4. TLS
    5. C ABI
    6. Auto memory management for JITed code
-      1. dwarf debug info(refer to julia) []
+      1. dwarf debug info(refer to julia) [3]
       2. codecache
+
 ## What's the implementation of AOT in WAMR
 ![Alt text](image.png)
 

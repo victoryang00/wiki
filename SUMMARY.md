@@ -13,7 +13,7 @@
     - [perf](kernel-obervability/perf.md)
     - [instrument](kernel-obervability/instrument.md)
     - [eBPF](kernel-obervability/ebpf.md)
-- [LLM for Sys for LLM](rl-for-sys/README.md)
+- [LLM4Sys4LLM](rl-for-sys/README.md)
     - [llm z3](rl-for-sys/llm_z3.md)
 - [RTL](rtl/README.md)
     - [Delay buffer](rtl/delay_buffer.md)  

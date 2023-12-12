@@ -16,6 +16,11 @@ lsmem to turn off
 
 ## DAMON Solution from Amazon's 
 
-## My QEMU Solution
+## QEMU Solution
 
-## My CXLMemSim Solution
+### Reference
+1. https://airbus-seclab.github.io/qemu_blog/tcg_p3.html
+2. https://lists.gnu.org/archive/html/qemu-devel/2017-01/msg03522.html
+3. https://www.qemu.org/docs/master/devel/memory.html
+
+## CXLMemSim Solution
