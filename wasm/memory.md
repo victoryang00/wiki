@@ -10,6 +10,7 @@ The WAMR memory is maintained in 1. Module Instance structure: WAMR maintains th
 ## The impact of linear memory
 Every memory ptr is the offset to the mmap first address. In interpreter the loader will malloc the memory. In AOT, the memory is mmaped and the offset is the offset to the mmaped address. 
 
+Other than linear memory, we have multiple memory regions for the global data, the table data, the function data, and the module instance data. The memory regions are either mmaped or malloced and mantained by linker and loader which is largely OS and libc specific.
 
 ## InterpFrame, JITFrame & AOTFrame
-The current WAMR frame model is implemented in a unified view after [PR #2830](). Whereas on each of WebAssembly branch, the native view will commit the register to the stack without going into the 
+The current WAMR frame model is implemented in a unified view after [PR #2830](). Whereas on each of WebAssembly branch, the native view will commit the register to the stack without going into the unified WASM Frame.

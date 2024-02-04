@@ -1,5 +1,5 @@
 ## The general purpose usage of inserting bpf and modify state in kernel
-I'm leveraging `kretprobe_overwrite_return`, an API was supposed to inject the fault to arbitrary kernel function
+I'm leveraging `kretprobe_overwrite_return`, an API was supposed to inject the fault to arbitrary kernel function. Latest Intel CPU has codesign for not flushing the ROB for these trampolines.
 
 ### kprobe impl
 instrument on any instruction to jmp to `pre_handler`->function
