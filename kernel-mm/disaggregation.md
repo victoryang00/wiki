@@ -3,26 +3,20 @@
 For an orchestration system, **resource management** needs to consider at least the following aspects:
 
 1. An abstraction of the resource model; including,
-
    - What kinds of resources are there, for example, CPU, memory (local vs remote that can be transparent to the user), etc.;
-
    - How to represent these resources with data structures;
-
    - resource scheduling
-
    - How to describe a resource application (spec) of a workload, for example, "This container requires 4 cores and 12GB~16GB(4GB local/ 8GB-12GB remote) of memory";
-
    - How to describe the current resource allocation status of a node, such as the amount of allocated/unallocated resources, whether it supports over-segmentation, etc.;
-
    - **Scheduling algorithm**: how to select the most suitable node for it according to the workload spec;
 
 2. Resource quota
-
    - How to ensure that the amount of resources used by the workload does not exceed the preset range (so as not to affect other workloads);
-
    - How to ensure the quota of workload and system/basic service so that the two do not affect each other.
 
-k8s is currently the most popular container orchestration system, so how does it solve these problems?
+3. What if add the CXL 3.0 and fabric manager?
+	- CXL 2.0 introduces switching functionality similar to PCIe switching, but because CXL supports LD-ST memory access by the CPU, you'll not only be able to deploy memory at a distance for far-memory capacity scaling, but enable multiple systems to take advantage of it in what's called memory pooling. The significant difference between SLDs and MLDs appears in memory pooling
+	- The 3.0 spec also provides means for direct peer-to-peer communications over switches and fabrics. This means peripherals — say two GPUs or a GPU and memory-expansion module — could theoretically talk to one another without the host CPU's involvement, which eliminates the CPU as a potential checkpoint.
 
 ## **k8s resource model**
 
