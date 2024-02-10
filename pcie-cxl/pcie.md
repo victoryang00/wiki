@@ -9,7 +9,7 @@ CXL 1.1 is the current production ready version of CXL. It builds a new set of p
 ### ATS
 Address Translation Service
 #### Remote Memory Translation Idea
-The problem of utilizing remote memory and don't hurt the host CPU with flushing the TLB or irq the host CPU is a problem.
+Utilizing remote memory and don't hurt the host CPU with flushing the TLB or irq the host CPU is a problem.
 
 ## FLIT
 Hardware hack for doubling the bandwidth with same latency. Squeezing the data into the same space slot.
