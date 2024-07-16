@@ -7,7 +7,7 @@ CXL 1.1 is the current production ready version of CXL. It builds a new set of p
 ## TLP
 ![Alt text](image-1.png)
 ### ATS
-Address Translation Service
+Address Translation Service, 
 #### Remote Memory Translation Idea
 Utilizing remote memory and don't hurt the host CPU with flushing the TLB or irq the host CPU is a problem.
 
