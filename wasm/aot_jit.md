@@ -1,5 +1,5 @@
 ## How AOT is implemented in LLVM
-Implement the struct in `OpaqueExecutionEngine`. Compile everything with auxiliary data structure and store in the mmaped file.
+Compile everything with metadata structure and store in the struct comp_ctx.
 1. `Module` is the basic unit of compilation
    1. Optimization
    2. Passes
@@ -15,8 +15,9 @@ ORCJIT is not a standalone JIT engine and do not have dynamic compilation with p
 2. Remote execution & debugging support [4]
    1. Good for live migration
    2. not good mapping accross platform 
-3. Do not have struct `OpaqueExecutionEngine` and standalone struct update during running.
-4. Runtime
+![alt text](image-1.png)
+1. Have standalone comp_ctx struct update during runtime. You can store the runtime information in the struct through runtime API.
+2. Runtime
    1. Try-Catch
    2. Static Var Init
    3. dlopen
@@ -27,7 +28,6 @@ ORCJIT is not a standalone JIT engine and do not have dynamic compilation with p
       2. codecache
 
 ## What's the implementation of AOT in WAMR
-![Alt text](image.png)
 
 1. `aot_loader.c` is the main entry point of AOT
 2. `aot_runtime.c` gives the runtime export function for AOT that can hook for specific logic exports
