@@ -24,7 +24,6 @@
     - [Custom Pass](llvm-mlir/custom_pass.md)
     - [Remotable Pointer](llvm-mlir/remotable_pointer.md)
     - [MLIR](llvm-mlir/mlir.md)
-    - [Custom Pass](llvm-mlir/custom_pass.md)
 - [PCIe CXL](pcie-cxl/README.md)
     - [NoC](pcie-cxl/noc.md)
     - [PCIe](pcie-cxl/pcie.md)

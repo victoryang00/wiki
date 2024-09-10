@@ -42,12 +42,18 @@ BPF_LSM on loading will enter a previledge mode, it will be hard to maintain the
 We can see much more KFuncs is exported for helper function and verification. https://ebpf-docs.dylanreimerink.nl/linux/kfuncs/ 
 
 ## Hot topics
-- Hooks:
-  - scheduler + bpf
-  - hid + bpf
-  - oom + bpf
-  - fuse + bpf
-  - userfaultfd + bpf
+
+- scheduler + bpf
+  - [gHost](https://research.google/pubs/ghost-fast-and-flexible-user-space-delegation-of-linux-scheduling/)
+  - [sched_ext](https://github.com/sched-ext/scx)
+- hid + bpf
+  - joystick
+- oom + bpf
+- cgroup + bpf
+- rdma + bpf
+- fuse + bpf
+- userfaultfd + bpf
+  - [Custom Page Fault Handling With eBPF](https://dl.acm.org/doi/10.1145/3672197.3673432)
 
 ## Reference
 1. https://lore.kernel.org/lkml/202209030333.Goj9I0Pe-lkp@intel.com/T/

@@ -42,6 +42,7 @@ func @launch(%h_out : memref<?xf32>, %h_in : memref<?xf32>, %n : i64) {
         }
     }
 }
+```
 ## MLIR JIT
 mlir-cpu-runner
 
