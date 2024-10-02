@@ -48,12 +48,13 @@ mlir-cpu-runner
 
 ## Write a pass that emit two dialect
 ### Conversion
-
+MLIR to MLIR rewrite.
 ### Dialect Definition
-
+Define Dialect Operation and Attributes. Attributes are embedded for static Dataflow computation.
 ### Transform
-
+Transform the dialect to target dialect.
 ### Lowering
+MLIR to LLVM IR rewrite.
 
 
 ## Reference
